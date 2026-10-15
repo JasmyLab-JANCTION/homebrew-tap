@@ -1,0 +1,14 @@
+name: test
+on: [push, pull_request, workflow_dispatch]
+jobs:
+  brew:
+    strategy:
+      matrix:
+        os: [macos-latest, ubuntu-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: Homebrew/actions/setup-homebrew@main
+      - run: brew tap jasmylab-janction/tap "$GITHUB_SERVER_URL/$GITHUB_REPOSITORY"
+      - run: brew install jasmylab-janction/tap/janction-render
+      - run: brew test jasmylab-janction/tap/janction-render
+      - run: janction-render --version
